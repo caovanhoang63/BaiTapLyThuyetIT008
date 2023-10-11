@@ -19,7 +19,14 @@ namespace QLSV
                 while ((line = reader.ReadLine()) != null)
                 {
                     string[] words = line.Split(' ');
-                    SinhVien sinhvien = new SinhVien(words[1],words[2],words[0],float.Parse(words[3]),float.Parse(words[4]),float.Parse(words[5]),float.Parse(words[6]));
+                    string ten = string.Empty;
+                    int length = words.Length;
+                    for (int i = 2; i <= length - 5; i++)
+                    {
+                        ten += words[i] + " ";
+                    }
+                    ten = ten.TrimEnd();
+                    SinhVien sinhvien = new SinhVien(words[1],ten,words[0],float.Parse(words[length-4]),float.Parse(words[length-3]),float.Parse(words[length-2]),float.Parse(words[length-1]));
                     List.Add(sinhvien);
                 }
             }
@@ -40,37 +47,56 @@ namespace QLSV
             }
         }
 
-        public void Search(string input1, string input2 = null )
+        public void Search(string[] criteria)
         {
-            List<SinhVien> result = new List<SinhVien>();
-            foreach (SinhVien sinhvien in List)
+            List<SinhVien> results = new List<SinhVien>();
+
+            string studentId1 = criteria[0];
+            string studentId2 = criteria[criteria.Length-1];
+
+            string studentName1 = String.Join(" ", criteria, 1, criteria.Length - 2);
+            string studentName2 = String.Join(" ", criteria, 2, criteria.Length - 2);
+            string studentName3 = String.Join(" ", criteria, 1, criteria.Length - 1);
+            string Id = "";
+            string Name = "";
+            foreach (SinhVien student in List)
             {
-                if (sinhvien.Mssv == input1 ||
-                    sinhvien.Ten.Replace(' ','_')  == input1 ||
-                    sinhvien.Mssv == input2 ||
-                    sinhvien.Ten.Replace(' ','_')  == input2)
-                {
-                    result.Add(sinhvien);
+                Id = student.Mssv;
+                Name = student.Ten;
+                
+                bool idMatched = Id == studentId1 || Id == studentId2;
+                bool nameMatched = Name == studentName1 || Name == studentName2|| Name == studentName3 ;
+    
+                if (idMatched || nameMatched) {
+                    results.Add(student);
                 }
             }
 
-            printList(result);
+            if (results.Count == 0) {
+                Console.WriteLine("No suitable students were found.");
+                return;
+            }
+
+            printList(results);
         }
         
-        public void Remove(string mssv)
+        public bool Remove(string mssv)
         {
-
+            bool flag = false;
             string tempFile = Path.GetTempFileName();
             using (var sw = new StreamWriter(tempFile))
             {
                 foreach (SinhVien sinhvien in List)
                 {
-                    if(sinhvien.Mssv != mssv)
+                    if (sinhvien.Mssv != mssv)
                         sw.WriteLine(sinhvien.ToString());
+                    else
+                        flag = true;
                 }
             }
             File.Delete(filePath);
             File.Move(tempFile,filePath);
+            return flag;
         }
         
         private void TemplatePrint()
@@ -78,7 +104,6 @@ namespace QLSV
             Console.WriteLine("{0,5} {1,10} {2,10} {3,20} {4,10} {5,10} {6,10} {7,10}", 
                 "STT", "Malop", "MSSV", "Ten", "Toan", "Anh", "Van", "DTB");
             Console.WriteLine(new string('-', 92));
-            
         }
         
         public void Top(int n,bool order)
@@ -91,55 +116,65 @@ namespace QLSV
             int length = List.Count;
             if (length == 0) return;
             int count = 1;
-                for(int i = 0 ; i < length - 1 ;i++)
+            for(int i = 0 ; i < length - 1 ;i++)
             {
                 Console.WriteLine("{0,5} {1,10} {2,10} {3,20} {4,10} {5,10} {6,10} {7,10}",
                     count, List[i].Malop, List[i].Mssv, List[i].Ten, List[i].DiemToan,
                     List[i].DiemAnh, List[i].DiemVan, List[i].Dtb);
-                if (i != length - 1 && List[i].Dtb != List[i + 1].Dtb )
+                if ((i != length - 1) && (List[i].Dtb != List[i + 1].Dtb) )
                     count++;
                 if (count > n)
                     break;
             }
         }
 
-        public void Export(string order, string destPath) 
+        public void Export(string option, string destPath) 
         {
             List<SinhVien> tempList;
-  
-            if (order == "all") {
+            string directory = Path.GetDirectoryName(destPath);
+            if (string.IsNullOrEmpty(directory))
+            {
+                directory = AppDomain.CurrentDomain.BaseDirectory + destPath;
+                Console.WriteLine("File will be saved to default directory: " + directory);
+            }
+
+            if (option == "all") {
                 tempList = List; 
             }
             else {
-                tempList = List.Where(sv => sv.Malop == order).ToList();
+                tempList = List.Where(sv => sv.Malop == option).ToList();
             }
-
+            
             string tempFile = Path.GetTempFileName();
-
+            
             using (var sw = new StreamWriter(tempFile)) {
                 foreach (var sv in tempList) {
                     sw.WriteLine(sv);
                 }
             }
-
             try
             {
                 File.Move(tempFile, destPath);
                 Console.WriteLine("Create " + destPath);
             }
-            catch (Exception)
+            catch (DirectoryNotFoundException )
             {
-                File.Copy(tempFile, destPath, true);
-                Console.WriteLine("Overwrite " + destPath);
+                Console.WriteLine("Could not find a part of the path " + destPath);
+            }
+            catch (IOException)
+            {
+                try
+                {
+                    File.Copy(tempFile, destPath, true);
+                    Console.WriteLine("Overwrite " + destPath);
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Could not find a part of the path " + destPath);
+                }
             }
         }
-
-        private bool IsInClass(string maLop, SinhVien sinhVien)
-        {
-            if (sinhVien.Malop == maLop)
-                return true;
-            return false;
-        }
+        
         private void printList(List<SinhVien> list)
         {
             TemplatePrint();

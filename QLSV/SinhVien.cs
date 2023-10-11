@@ -8,6 +8,21 @@ namespace QLSV
         
         public SinhVien(string mssv, string ten, string malop,  float diemToan, float diemAnh, float diemVan, float dtb)
         {
+            if (!ValidateScore(diemToan)) {
+                throw new ArgumentException("Diem toan khong hop le"); 
+            }
+
+            if (!ValidateScore(diemAnh)) {
+                throw new ArgumentException("Diem anh khong hop le");
+            }
+            
+            if (!ValidateScore(diemVan)) {
+                throw new ArgumentException("Diem van khong hop le");
+            }
+            
+            if (!ValidateScore(dtb)) {
+                throw new ArgumentException("Diem trung binh khong hop le");
+            }
             this.malop = malop;
             this.mssv = mssv;
             this.ten = ten;
@@ -107,11 +122,17 @@ namespace QLSV
         private float diemVan;
         private float dtb;
 
+        private bool ValidateScore(float score)
+        {
+            if (score < 0 || score > 10) {
+                return false; 
+            }
 
+            return true;
+        }
         public override string ToString()
         {
-            return Malop + " " + Mssv + " " + Ten.Replace(' ','_') + " " +
-                   DiemAnh + " " +DiemAnh + " " +DiemVan + " " + Dtb;
+            return Malop + " " + Mssv + " " + Ten + " " + DiemAnh + " " + DiemAnh + " " +DiemVan + " " + Dtb;
         }
         public int CompareTo(object obj)
         {
