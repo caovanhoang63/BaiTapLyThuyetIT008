@@ -1,6 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QLSV", "QLSV\QLSV.csproj", "{42758AA2-70CB-4C7E-9CA1-4139367201D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{038F92F1-E11F-4118-8B41-AC593911A72A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI_Test", "GUI_Test\GUI_Test.csproj", "{7A5DE378-6640-4B40-865B-8A5D9C9860DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -12,5 +19,19 @@ Global
 		{42758AA2-70CB-4C7E-9CA1-4139367201D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{42758AA2-70CB-4C7E-9CA1-4139367201D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{42758AA2-70CB-4C7E-9CA1-4139367201D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{038F92F1-E11F-4118-8B41-AC593911A72A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{038F92F1-E11F-4118-8B41-AC593911A72A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{038F92F1-E11F-4118-8B41-AC593911A72A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{038F92F1-E11F-4118-8B41-AC593911A72A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A5DE378-6640-4B40-865B-8A5D9C9860DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A5DE378-6640-4B40-865B-8A5D9C9860DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A5DE378-6640-4B40-865B-8A5D9C9860DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A5DE378-6640-4B40-865B-8A5D9C9860DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0C2BBA23-1973-4C6C-A298-4DED1F5D89FC}
 	EndGlobalSection
 EndGlobal
