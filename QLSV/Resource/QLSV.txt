@@ -51,4 +51,3 @@ K24 HE240002 Hoang Thi C2       7.8 7.8 8.9 7.8
 K24 HE240003 Mai Thi D2       8.5 8.5 7.3 8.3
 K24 HE240004 Le Thanh E2       7.2 7.2 6.7 7
 K24 HE240005 Pham Van F2       8.3 8.3 9.1 8.3
-

@@ -72,13 +72,10 @@ namespace QLSV
                 sinhvien = new SinhVien(args[1], ten, args[length - 5], float.Parse(args[length - 4])
                     , float.Parse(args[length - 3]), float.Parse(args[length - 2]), float.Parse(args[length - 1]));
             }
-            catch (ArgumentException e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Input string was not in a correct format.");
+
                 Console.WriteLine("Cannot add new student");
                 Console.WriteLine(
                     "Information of student must include: id [name] class_id math english literature avg");
